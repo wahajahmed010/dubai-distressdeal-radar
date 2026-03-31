@@ -1,0 +1,45 @@
+# Sensitive configuration files
+config_local.py
+*.env
+.env
+
+# Python virtual environment
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Database files
+radar.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated/exported data files
+drops_export.csv
+drops_export.json
+live_feed.html
+live_feed.json
+
+# Logs
+*.log
+logs/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+*.tar.gz

@@ -1,0 +1,82 @@
+"""
+Configuration for Dubai Distress Radar.
+Copy this file to config_local.py and fill in your API keys.
+"""
+
+# ── Firecrawl (self-hosted) ──────────────────────────────────
+# Run via Docker: docker compose up -d  (see SETUP_GUIDE.md)
+FIRECRAWL_URL = "http://localhost:3002"
+FIRECRAWL_TIMEOUT = 60  # seconds per page
+
+# ── Bayut API (RapidAPI) — optional fallback ─────────────────
+# Sign up free at: https://rapidapi.com/BayutAPI/api/bayut-api1
+# Free tier: 750 calls/month (no credit card needed)
+RAPIDAPI_KEY = "YOUR_RAPIDAPI_KEY_HERE"
+RAPIDAPI_HOST = "uae-real-estate2.p.rapidapi.com"
+BAYUT_BASE_URL = f"https://{RAPIDAPI_HOST}"
+
+# ── Listing Search URLs to Crawl ────────────────────────────
+# These are publicly accessible search result pages.
+# Firecrawl will render JS and extract structured data.
+# Customize these to target your areas of interest.
+BAYUT_SEARCH_URLS = [
+    "https://www.bayut.com/for-sale/apartments/dubai/business-bay/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/dubai-marina/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/downtown-dubai/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/jumeirah-village-circle-jvc/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/palm-jumeirah/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/dubai-hills-estate/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/jumeirah-lake-towers-jlt/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/arjan/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/sobha-hartland/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/dubai-creek-harbour/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/meydan-city/?sort=date_desc",
+    "https://www.bayut.com/for-sale/apartments/dubai/al-furjan/?sort=date_desc",
+    "https://www.bayut.com/for-sale/villas/dubai/dubai-hills-estate/?sort=date_desc",
+    "https://www.bayut.com/for-sale/villas/dubai/arabian-ranches/?sort=date_desc",
+    "https://www.bayut.com/for-sale/villas/dubai/palm-jumeirah/?sort=date_desc",
+]
+
+# Max pages to paginate per search URL (each page ~25 listings)
+MAX_PAGES_PER_URL = 2
+
+# ── Database ─────────────────────────────────────────────────
+DB_PATH = "radar.db"
+
+# ── Fetching Parameters ──────────────────────────────────────
+# Dubai location IDs for Bayut API (pre-mapped)
+# Use the locations_search endpoint to find more
+DUBAI_LOCATION_IDS = {
+    "dubai":                "1",
+    "business-bay":         "6901",
+    "dubai-marina":         "5002",
+    "downtown-dubai":       "6",
+    "palm-jumeirah":        "7",
+    "jumeirah-village-circle": "8",
+    "dubai-hills-estate":   "12",
+    "arabian-ranches":      "15",
+    "jumeirah-lake-towers": "31",
+    "dubai-creek-harbour":  "62",
+    "meydan-city":          "144",
+    "arjan":                "40",
+    "sobha-hartland":       "124",
+    "motor-city":           "48",
+    "al-furjan":            "16",
+    "city-walk":            "151",
+}
+
+# Property categories to scan
+SCAN_PURPOSES = ["for-sale"]  # Add "for-rent" for rental tracking
+SCAN_CATEGORIES = [1]  # 1 = Residential, 2 = Commercial
+PAGES_PER_AREA = 3  # Pages to fetch per area (25 listings/page)
+
+# ── Drop Detection Thresholds ────────────────────────────────
+MIN_DROP_PCT = 2.0            # Minimum % drop to record
+MIN_DROP_AED = 10000          # Minimum AED drop to record
+CAPITULATION_THRESHOLD = 15.0 # % below area median = capitulation
+MULTI_CUT_WINDOW_DAYS = 90   # Days window to count as multi-cut pattern
+STALE_LISTING_DAYS = 120     # Mark listing inactive after N days unseen
+
+# ── Rate Limiting ────────────────────────────────────────────
+API_DELAY_SECONDS = 1.5       # Delay between API calls
+MAX_API_CALLS_PER_RUN = 100   # Safety cap per daily run
